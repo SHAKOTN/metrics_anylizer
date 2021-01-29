@@ -1,0 +1,111 @@
+version: "3.4"
+networks:
+  kafka-net:
+    driver: bridge
+
+services:
+  consume:
+    build:
+      context: .
+      target: test
+      dockerfile: consumer/Dockerfile
+    depends_on:
+      - db
+      - migrate
+      - kafka
+    networks:
+      - kafka-net
+    command: ["python", "consumer_run.py"]
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    restart: on-failure:5
+    volumes:
+      - .:/app
+
+  produce:
+    build:
+      context: .
+      target: test
+      dockerfile: producer/Dockerfile
+    networks:
+      - kafka-net
+    depends_on:
+      - kafka
+    command: ["python", "producer_run.py"]
+    volumes:
+      - .:/app
+
+  migrate:
+    build:
+      context: .
+      target: test
+      dockerfile: consumer/Dockerfile
+    command: python consumer/database/migrate.py
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    restart: on-failure:5
+    networks:
+      - kafka-net
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  hist:
+    build:
+      context: .
+      target: test
+      dockerfile: consumer/Dockerfile
+    command: ["python", "histogram_run.py"]
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    networks:
+      - kafka-net
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    image: postgres:11.6-alpine
+    networks:
+      - kafka-net
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metric -d metric_default"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      - kafka-net
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - kafka-net
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper

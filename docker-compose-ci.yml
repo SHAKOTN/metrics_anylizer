@@ -1,0 +1,46 @@
+version: "3.4"
+
+networks:
+  kafka-net:
+    driver: bridge
+
+services:
+  consume:
+    build:
+      context: .
+      target: test
+      dockerfile: consumer/Dockerfile
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    networks:
+      - kafka-net
+
+  produce:
+    build:
+      context: .
+      target: test
+      dockerfile: producer/Dockerfile
+    networks:
+      - kafka-net
+
+  db:
+    environment:
+      POSTGRES_USER: metric
+      POSTGRES_PASSWORD: metric
+      POSTGRES_DB: metric_default
+    image: postgres:11.6-alpine
+    networks:
+      - kafka-net
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metric -d metric_default"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
