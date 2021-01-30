@@ -36,6 +36,11 @@ $ make tests
 ## How to run:
 ### GitHub actions:
 [Simply check this Action executed and it's printing all histograms](https://github.com/SHAKOTN/metrics_anylizer/actions/runs/523328768)
+Or if you want to run it by youself:
+- Navigate to `Actions`
+- Under `Workflows` click `Run Services`
+- Then click `Run workflow` and check logs
+
 
 ### Local run
 ```
