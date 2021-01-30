@@ -2,8 +2,8 @@ name: Run Services
 on: workflow_dispatch
 
 jobs:
-  test:
-    name: Run test suite
+  full_run:
+    name: Run services and print histograms
     runs-on: ubuntu-latest
     env:
       COMPOSE_FILE: docker-compose-ci.yml

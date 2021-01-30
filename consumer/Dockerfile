@@ -7,7 +7,6 @@ ENV PYTHONPATH=/app
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev libffi-dev bash
 
 RUN pip install --upgrade pip
-RUN pip install dumb-init==1.2.2
 
 ADD consumer/requirements/requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
@@ -23,6 +22,3 @@ FROM base as test
 ADD producer/requirements/requirements-test.txt /app/requirements-test.txt
 RUN pip install -r /app/requirements-test.txt
 RUN rm -f /app/requirements-test.txt
-
-FROM base as production
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
