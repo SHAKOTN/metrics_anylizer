@@ -24,7 +24,7 @@ def test_is_valid_consumer_message__valid():
                         '"alarmID":"9175114","alarmMO":"SubNetwork=Osijek,MeContext=LX00016,ManagedElement=LX00016,'
                         'ENodeBFunction=1,NbIotCell=sandrovac","alarmNotificationType":"Major",'
                         '"alarmLastSeqNo":"1469856",'
-                        '"alarmEventTime":"2020-01-24T09:23:03+02:00","vnocAlarmID":"ERA015"}'}
+                        '"alarmEventTime":"2020-01-24T09:23:03+02:00","vnocAlarmID":"015"}'}
     )
     assert is_valid_consumer_message(
         # Message without failed equipment
@@ -35,7 +35,7 @@ def test_is_valid_consumer_message__valid():
                         '"alarmID":"9175114","alarmMO":"SubNetwork=Osijek,MeContext=LX00016,ManagedElement=LX00016,'
                         'ENodeBFunction=1,NbIotCell=sandrovac","alarmNotificationType":"Major",'
                         '"alarmLastSeqNo":"1469856",'
-                        '"alarmEventTime":"2020-01-24T09:23:03+02:00","vnocAlarmID":"ERA015"}'}
+                        '"alarmEventTime":"2020-01-24T09:23:03+02:00","vnocAlarmID":"015"}'}
     )
 
 

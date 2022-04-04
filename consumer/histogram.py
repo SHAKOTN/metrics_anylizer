@@ -1,7 +1,6 @@
 """
 * Histogram about the most frequent alarms
 * Histogram about the nodes that got the most alarms
-* Timeline about the ERA015 alarms per hour
 """
 from typing import Any
 from typing import List
@@ -71,7 +70,7 @@ def _timeline_era015() -> List[Tuple[Any]]:
         )
 
     table = BeautifulTable()
-    print("ERA015 generated per hour")
+    print("015 generated per hour")
     for era015_daily in era015_timeline:
         table.rows.append([f"{era015_daily[0]}", era015_daily[1]])
 

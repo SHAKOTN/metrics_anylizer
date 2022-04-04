@@ -79,9 +79,9 @@ $ make full_run
 | | LX00015 |       36       |
 | +---------+----------------+
 ```
-3. ERA015 timeserier perH
+3. timeserier perH
 ```
-| ERA015 generated per hour
+| generated per hour
 | +---------------------+-------+
 | |        date         | count |
 | +---------------------+-------+

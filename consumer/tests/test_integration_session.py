@@ -61,12 +61,12 @@ def test_fetch_all(populate_table_with_test_data):
                 "Minor",
                 "1460077",
                 "2020-01-24T09:19:50+02:00",
-                "ERA015",
+                "015",
             ))
         session.commit()
         select_results = session.fetch_all(select_sql)
 
-    assert select_results == [('ERA005',), ('ERA005',), ('ERA005',), ('ERA015',)]
+    assert select_results == [('005',), ('005',), ('005',), ('015',)]
 
 
 def test_fetch_one(populate_table_with_test_data):
@@ -93,9 +93,9 @@ def test_fetch_one(populate_table_with_test_data):
                 "Minor",
                 "1460077",
                 "2020-01-29T09:19:50+02:00",
-                "ERA015",
+                "015",
             ))
         session.commit()
         select_results = session.fetch_one(select_sql)
 
-    assert select_results == ('ERA015',)
+    assert select_results == ('015',)

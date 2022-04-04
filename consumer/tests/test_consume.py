@@ -26,7 +26,7 @@ def test_consume_multiple_messages(migrate_table, consumer_mocked_multiple_messa
     # Check that messages were created properly
     with Session() as session:
         select_result_era015 = session.fetch_one(
-            "SELECT vnoc_alarm_id FROM metrics WHERE vnoc_alarm_id = 'ERA015';"
+            "SELECT vnoc_alarm_id FROM metrics WHERE vnoc_alarm_id = '015';"
         )
         select_result_era021 = session.fetch_one(
             "SELECT vnoc_alarm_id FROM metrics WHERE vnoc_alarm_id = 'ERA021';"
@@ -34,9 +34,9 @@ def test_consume_multiple_messages(migrate_table, consumer_mocked_multiple_messa
         select_multiple_results = session.fetch_all(
             "SELECT vnoc_alarm_id FROM metrics ORDER BY alarm_event_time DESC;"
         )
-    assert select_result_era015 == ("ERA015",)
+    assert select_result_era015 == ("015",)
     assert select_result_era021 == ("ERA021",)
-    assert select_multiple_results == [("ERA021",), ("ERA015",)]
+    assert select_multiple_results == [("ERA021",), ("015",)]
 
 
 def test_invalid_message_data(migrate_table, mocker):
